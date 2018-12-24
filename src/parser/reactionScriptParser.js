@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const TYPE_STRING = 'stringLiteral';
 const TYPE_NUMBER = 'numberLiteral';
 const TYPE_FUNC = 'callExpression';
@@ -9,11 +7,6 @@ const TYPE_REFERENCED_VAR = 'reference';
 const CHAR_EQUALS = '=';
 const CHAR_OPEN_PAREN = '(';
 const CHAR_CLOSE_PAREN = ')';
-const CHAR_OPEN_BRACE = '{';
-const CHAR_CLOSE_BRACE = '}';
-const CHAR_COLON = ':';
-const CHAR_COMMA = ',';
-const CHAR_SEMI_COLON = ';';
 
 const SPECIAL_CHARS = [
     { '=': 'equals' },
@@ -32,7 +25,7 @@ const KNOWN_EXPRESSIONS = [
     'display',
 ];
 
-const generateTokens = (reactionScript) => {
+export const tokenizer = (reactionScript) => {
 
     const castType = (value, tokens) => {
 
@@ -59,6 +52,7 @@ const generateTokens = (reactionScript) => {
                 if(token.type === TYPE_DECLARED_VAR && token.value === value) {
                     return token;
                 }
+                return null;
             });
 
             if(declaredVar) {
@@ -70,9 +64,7 @@ const generateTokens = (reactionScript) => {
 
         if(type) {
             return { type, value };
-        } else {
-            throw TypeError(`${value} is not recognised as a valid type`);
-        };
+        }
     };
 
     const scriptStripped = reactionScript.replace(/\s/g, '');
@@ -107,7 +99,7 @@ const generateTokens = (reactionScript) => {
     return tokens;
 };
 
-const generateAbstractSyntaxTree = (tokens) => {
+export const parser = (tokens) => {
 
     const specialCharArr = SPECIAL_CHARS.map(
         specialChar => Object.keys(specialChar)[0]
@@ -207,7 +199,4 @@ const generateAbstractSyntaxTree = (tokens) => {
     return ast;
 };
 
-fs.readFile('test.txt', 'utf8', (err, contents) => {
-    const tokens = generateTokens(contents);
-    const ast = generateAbstractSyntaxTree(tokens);
-});
+

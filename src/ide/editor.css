@@ -1,0 +1,12 @@
+#editor {
+  width: 50%;
+}
+
+#editor textarea {
+  width: 100%;
+  min-height: 400px;
+}
+
+#editor button {
+  display: block;
+}
