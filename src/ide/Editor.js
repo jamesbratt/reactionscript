@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { tokenizer, parser } from '../parser/reactionScriptParser';
+import interpreter from '../interpreter/interpreter';
 import './editor.css'
 
 class Editor extends Component {
@@ -17,7 +19,7 @@ class Editor extends Component {
   handleSubmit = () => {
     const tokens = tokenizer(this.state.value);
     const ast = parser(tokens);
-    console.log(ast);
+    interpreter(ast);
   }
 
   render() {
@@ -31,4 +33,4 @@ class Editor extends Component {
   }
 }
 
-export default Editor;
+export default connect()(Editor);
